@@ -1,15 +1,21 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class NewReportController extends GetxController {
   var nombreCliente = "".obs;
+  var idCliente = "".obs;
   var fechaServicio = DateTime.now().obs;
   var horaServicio = TimeOfDay.now().obs;
 
   void updateNombreCliente(String nombre) {
     nombreCliente.value = nombre;
+  }
+
+  void updateIdCliente(String id) {
+    idCliente.value = id;
   }
 
   void updateFechaServicio(DateTime fecha) {
@@ -71,6 +77,31 @@ class NewReportPage extends StatelessWidget {
               controller: TextEditingController(text: newReportController.nombreCliente.value.isNotEmpty ? newReportController.nombreCliente.value : null),
               onChanged: (value) {
                 newReportController.updateNombreCliente(value);
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: Text(
+                'Identificacion del cliente',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextField(
+              decoration: const InputDecoration(
+                hintText: 'Ingrese la identificación del cliente',
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              controller: TextEditingController(
+                text: newReportController.idCliente.value.isNotEmpty ? newReportController.idCliente.value : null,
+              ),
+              onChanged: (value) {
+                newReportController.updateIdCliente(value);
               },
             ),
             Padding(
