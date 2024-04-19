@@ -38,7 +38,7 @@ class NewReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Crear Informe'),
+        title: const Text('Datos del Informe'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

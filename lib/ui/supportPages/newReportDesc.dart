@@ -11,13 +11,10 @@ class NewReportDescPage extends StatefulWidget {
 }
 
 class _NewReportDescPageState extends State<NewReportDescPage> {
-  double _keyboardHeight = 0;
+  
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final appBarHeight = AppBar().preferredSize.height;
-    final availableHeight = screenHeight - MediaQuery.of(context).viewInsets.bottom - appBarHeight;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,13 +34,13 @@ class _NewReportDescPageState extends State<NewReportDescPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 20.0),
                 child: Text(
                   'Asunto',
@@ -53,12 +50,12 @@ class _NewReportDescPageState extends State<NewReportDescPage> {
                   ),
                 ),
               ),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
                   hintText: 'Ingrese el asunto del informe',
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 20.0),
                 child: Text(
                   'Descripción',
@@ -69,31 +66,16 @@ class _NewReportDescPageState extends State<NewReportDescPage> {
                 ),
               ),
               SizedBox(
-                height: _keyboardHeight > 0 ? availableHeight - 20 : 300, // Reduce la altura si el teclado está abierto
+                height: 300, // Reduce la altura si el teclado está abierto
                 child: TextField(
                   maxLines: null,
                   expands: true,
                   maxLength: 300,
                   textAlignVertical: TextAlignVertical.top,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Ingrese la descripción del informe',
                     border: OutlineInputBorder(),
                   ),
-                  onTap: () {
-                    setState(() {
-                      _keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-                    });
-                  },
-                  onEditingComplete: () {
-                    setState(() {
-                      _keyboardHeight = 0;
-                    });
-                  },
-                  onSubmitted: (_) {
-                    setState(() {
-                      _keyboardHeight = 0;
-                    });
-                  },
                 ),
               ),
             ],

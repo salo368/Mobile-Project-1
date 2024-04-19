@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'supportPages/newReport.dart';
 import 'supportPages/newReportDesc.dart';
+import 'coordinatorPages/coorHome.dart';
 import 'supportPages/technicalSupport.dart';
+
 
 
 
@@ -22,11 +24,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/technicalSupport',
+      initialRoute: '/coorHome',
       getPages: [
         GetPage(name: '/technicalSupport', page: () => const TechnicalSupport()),
         GetPage(name: '/newReport', page: () => NewReportPage()),
-        GetPage(name: '/newReportDesc', page: () => const NewReportDescPage())
+        GetPage(name: '/newReportDesc', page: () => const NewReportDescPage()),
+        GetPage(name: '/coorHome', page: () => const CoorHome())
       ],
     );
   }
