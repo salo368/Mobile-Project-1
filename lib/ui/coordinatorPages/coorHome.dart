@@ -20,6 +20,7 @@ class _CoorHomeState extends State<CoorHome> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 186, 212, 255), // Cambio de color a azul claro
           title: const Text('Coordinador de Reportes'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -28,11 +29,14 @@ class _CoorHomeState extends State<CoorHome> {
             },
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.people),
-              onPressed: () {
-                // Agrega aquí la lógica para guardar la información del informe
-              },
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0), // Padding de 10px a la derecha
+              child: IconButton(
+                icon: const Icon(Icons.people_alt),//storage
+                onPressed: () {
+                  // Agrega aquí la lógica para guardar la información del informe
+                },
+              ),
             ),
           ],
         ),
