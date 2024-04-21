@@ -32,7 +32,7 @@ class _CoorHomeState extends State<CoorHome> {
             Padding(
               padding: const EdgeInsets.only(right: 10.0), // Padding de 10px a la derecha
               child: IconButton(
-                icon: const Icon(Icons.people_alt),//storage
+                icon: const Icon(Icons.people_alt),// storage
                 onPressed: () {
                   // Agrega aquí la lógica para guardar la información del informe
                 },
