@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CoorHome extends StatefulWidget {
-  const CoorHome({super.key});
+class CoorUsers extends StatefulWidget {
+  const CoorUsers({super.key});
 
   @override
-  State<CoorHome> createState() => _CoorHomeState();
+  State<CoorUsers> createState() => _CoorUsersState();
 }
 
-class _CoorHomeState extends State<CoorHome> {
+class _CoorUsersState extends State<CoorUsers> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +17,7 @@ class _CoorHomeState extends State<CoorHome> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 186, 212, 255), // Cambio de color a azul claro
-          title: const Text('Coordinador de Reportes'),
+          title: const Text('Coordinador de Usuarios de Soporte'),
           leading: IconButton(
             icon: Transform.rotate(
               angle: 3.1415927, // 180 grados en radianes
@@ -31,9 +31,9 @@ class _CoorHomeState extends State<CoorHome> {
             Padding(
               padding: const EdgeInsets.only(right: 10.0), // Padding de 10px a la derecha
               child: IconButton(
-                icon: const Icon(Icons.people_alt),// storage,person_add_alt_1
+                icon: const Icon(Icons.view_list_rounded),// storage,person_add_alt_1
                 onPressed: () {
-                  Get.toNamed("/coorUsers");
+                  Get.toNamed("/coorHome");
                 },
               ),
             ),
