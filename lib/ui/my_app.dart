@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'supportPages/newReport.dart';
-import 'supportPages/newReportDesc.dart';
-import 'coordinatorPages/coorHome.dart';
-import 'supportPages/technicalSupport.dart';
+import 'supportPages/new_report.dart';
+import 'supportPages/new_report_desc.dart';
+import 'coordinatorPages/coor_home.dart';
+import 'supportPages/technical_support.dart';
 
 
 
