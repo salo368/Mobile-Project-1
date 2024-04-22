@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'coor_report_resume.dart';
 
 class ReportTable extends StatefulWidget {
-  
+  final VoidCallback changeToReport;
 
-  const ReportTable({Key? key}) : super(key: key);
+  const ReportTable({Key? key, required this.changeToReport}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -131,7 +131,7 @@ class _ReportTableState extends State<ReportTable> {
   }
   void addReport() {
     setState(() {
-      reportWidgets.insert(0,ReportResume(name: "Salomon David Saenz Giraldo",date: "20/04/2024", note: -1, index: reportCount,),);
+      reportWidgets.insert(0,ReportResume(name: "Salomon David Saenz Giraldo",date: "20/04/2024", note: -1, index: reportCount,changeToReport: widget.changeToReport,),);
       // userCount++;
       reportCount++;
     });

@@ -5,6 +5,7 @@ class ReportResume extends StatefulWidget {
   final String date;
   final double note;
   final int index; // Agregar el parámetro de índice
+  final VoidCallback changeToReport;
 
   const ReportResume({
     Key? key,
@@ -12,6 +13,7 @@ class ReportResume extends StatefulWidget {
     required this.date,
     required this.note,
     required this.index,
+    required this.changeToReport
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class _ReportResumeState extends State<ReportResume> {
       },
       child: GestureDetector(
         onTap: () {
-          print("Presionado");
+          widget.changeToReport();
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 50),

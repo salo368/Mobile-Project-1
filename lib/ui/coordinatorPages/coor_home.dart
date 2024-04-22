@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'coor_report_table.dart';
+import 'coor_report.dart';
 
 class CoorHome extends StatefulWidget {
   const CoorHome({super.key});
@@ -11,6 +12,15 @@ class CoorHome extends StatefulWidget {
 }
 
 class _CoorHomeState extends State<CoorHome> {
+
+  late RxBool showReportTable;
+
+  @override
+  void initState() {
+    super.initState();
+    showReportTable = false.obs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,8 +50,19 @@ class _CoorHomeState extends State<CoorHome> {
             ),
           ],
         ),
-        body: const ReportTable(), // Aquí se cambia ListView.builder por Container vacío
+        body: Obx(() {
+          return showReportTable.value
+              ? ReportTable(changeToReport: switchToReport)
+              : Report(changeToReportTable: switchToReportTable);
+        }), // Aquí se cambia ListView.builder por Container vacío
       ),
     );
+  }
+  void switchToReportTable() {
+    showReportTable.value = true;
+  }
+
+  void switchToReport() {
+    showReportTable.value = false;
   }
 }
