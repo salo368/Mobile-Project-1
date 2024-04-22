@@ -16,6 +16,8 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
 
   @override
   Widget build(BuildContext context) {
+    addReport();
+    addReport();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

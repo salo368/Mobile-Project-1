@@ -60,7 +60,7 @@ class Login extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           // Verificar las credenciales ingresadas por el usuario
-                          if (emailController.text == 'b@b.com' &&
+                          if (emailController.text == 'user' &&
                               passwordController.text == '12345') {
                             // Usuario "a@a.com" redirigido a "/technicalSupport"
                             Get.toNamed("/technicalSupport");
