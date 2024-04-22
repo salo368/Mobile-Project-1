@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'coor_user_resume.dart';
 
-class UsersTable extends StatelessWidget {
+class UsersTable extends StatefulWidget {
   final VoidCallback changeToUsersCreate;
 
   const UsersTable({Key? key, required this.changeToUsersCreate}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
+  _UsersTableState createState() => _UsersTableState();
+}
+
+class _UsersTableState extends State<UsersTable> {
+  int userCount = 1; // Variable para contar el número de informes
+  List<Widget> reportWidgets = [];
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    addUser();
+    addUser();
+    addUser();
     return Column(
       children: [
         Padding(
@@ -35,7 +47,7 @@ class UsersTable extends StatelessWidget {
                     ),
                     elevation: 2,
                     child: ElevatedButton(
-                      onPressed: changeToUsersCreate,
+                      onPressed: widget.changeToUsersCreate,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(7.0),
                         backgroundColor: const Color.fromARGB(255, 144, 248, 148),
@@ -66,13 +78,16 @@ class UsersTable extends StatelessWidget {
                   bottomRight: Radius.circular(15.0),
                 ),
               ),
-              child: const Center(
-                child: Text(
-                  'Widget azul que ocupa todo el alto',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(15.0),
+                  bottomRight: Radius.circular(15.0),
+                ),
+                child: ListView.builder(
+                  itemCount: reportWidgets.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return reportWidgets[index];
+                  },
                 ),
               ),
             ),
@@ -81,4 +96,12 @@ class UsersTable extends StatelessWidget {
       ],
     );
   }
+
+  void addUser() {
+  setState(() {
+    reportWidgets.insert(0,UserResume(name: "Salomon David Saenz Giraldo",reportCount: 8, note: 4, index: userCount,),);
+    userCount++;
+  });
+}
+
 }

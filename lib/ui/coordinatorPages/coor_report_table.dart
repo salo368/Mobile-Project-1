@@ -78,8 +78,8 @@ class ReportTable extends StatelessWidget {
                       onSelected: (value) {
                         // Acción a realizar según la opción seleccionada
                       },
-                      offset: Offset(60, 40), // Ajusta el valor de Y según sea necesario
-                      icon: Icon(Icons.filter_list),
+                      offset: const Offset(60, 40), // Ajusta el valor de Y según sea necesario
+                      icon: const Icon(Icons.filter_list),
                     ),
                   ],
                 ),
