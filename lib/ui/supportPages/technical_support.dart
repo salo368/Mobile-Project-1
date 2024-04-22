@@ -27,7 +27,7 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
               child: const Icon(Icons.exit_to_app),
             ),
             onPressed: () {
-              // Acción al presionar el botón de ir atrás
+              Get.toNamed("/login");
             },
           ),
         ),

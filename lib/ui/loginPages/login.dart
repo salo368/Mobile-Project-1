@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
-  
   const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Variables para almacenar el correo y la contraseña ingresados por el usuario
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    // Verificar si el ancho de la pantalla es el de un dispositivo móvil
+    bool isMobileWidth = MediaQuery.of(context).size.width < 1000;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -17,20 +21,20 @@ class Login extends StatelessWidget {
             Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blue, // Color de fondo del círculo
+                color: Colors.blue,
               ),
               child: const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Icon(
                   Icons.person,
-                  size: 100, // Tamaño grande del icono de usuario
-                  color: Colors.white, // Color del icono
+                  size: 100,
+                  color: Colors.white,
                 ),
               ),
             ),
             const SizedBox(height: 20),
             FractionallySizedBox(
-              widthFactor: 0.4, // Hace que la tarjeta ocupe el 40% del ancho de la pantalla
+              widthFactor: isMobileWidth ? 1.0 : 0.4,
               child: Card(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -38,25 +42,41 @@ class Login extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Campo de correo
-                      const TextField(
-                        decoration: InputDecoration(
+                      TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
                           labelText: 'Correo',
                         ),
                       ),
-                      const SizedBox(height: 20), // Separador
-                      // Campo de clave
-                      const TextField(
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Clave',
                         ),
                       ),
-                      const SizedBox(height: 20), // Separador
-                      // Botón de aceptar
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          // Aquí puedes agregar la lógica para procesar el inicio de sesión
+                          // Verificar las credenciales ingresadas por el usuario
+                          if (emailController.text == 'b@b.com' &&
+                              passwordController.text == '12345') {
+                            // Usuario "a@a.com" redirigido a "/technicalSupport"
+                            Get.toNamed("/technicalSupport");
+                          } else if (emailController.text == 'a@a.com' &&
+                              passwordController.text == '12345') {
+                            // Usuario "b@b.com" redirigido a "/coorHome"
+                            Get.toNamed("/coorHome");
+                          } else {
+                            // Si las credenciales son incorrectas, mostrar un mensaje de error
+                            Get.snackbar(
+                              'Error',
+                              'Correo o contraseña incorrectos',
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                            );
+                          }
                         },
                         child: const Text('Aceptar'),
                       ),
@@ -65,11 +85,10 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 200), // Widget vacío de 100px
+            const SizedBox(height: 200),
           ],
         ),
       ),
     );
   }
 }
-

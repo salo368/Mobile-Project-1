@@ -18,7 +18,7 @@ class _CoorHomeState extends State<CoorHome> {
   @override
   void initState() {
     super.initState();
-    showReportTable = false.obs;
+    showReportTable = true.obs;
   }
 
   @override
@@ -35,7 +35,7 @@ class _CoorHomeState extends State<CoorHome> {
               child: const Icon(Icons.exit_to_app),
             ),
             onPressed: () {
-              // Acción al presionar el botón de ir atrás
+              Get.toNamed("/login");
             },
           ),
           actions: [
