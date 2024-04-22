@@ -24,7 +24,10 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
         appBar: AppBar(
           title: const Text('Soporte Técnico'),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: Transform.rotate(
+              angle: 3.1415927, // 180 grados en radianes
+              child: const Icon(Icons.exit_to_app),
+            ),
             onPressed: () {
               // Acción al presionar el botón de ir atrás
             },

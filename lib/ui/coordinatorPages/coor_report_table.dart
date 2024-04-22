@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'coor_report_resume.dart';
 
-class ReportTable extends StatelessWidget {
+class ReportTable extends StatefulWidget {
+  
+
   const ReportTable({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+  // ignore: library_private_types_in_public_api
+  _ReportTableState createState() => _ReportTableState();
+}
 
+class _ReportTableState extends State<ReportTable> {
+  int reportCount = 1; // Variable para contar el número de informes
+  List<Widget> reportWidgets = [];
+  @override
+  Widget build(BuildContext context) {
+    addReport();
+    addReport();
+    double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Padding(
@@ -78,7 +90,7 @@ class ReportTable extends StatelessWidget {
                       onSelected: (value) {
                         // Acción a realizar según la opción seleccionada
                       },
-                      offset: const Offset(60, 40), // Ajusta el valor de Y según sea necesario
+                      offset: const Offset(70, 43), // Ajusta el valor de Y según sea necesario
                       icon: const Icon(Icons.filter_list),
                     ),
                   ],
@@ -99,13 +111,16 @@ class ReportTable extends StatelessWidget {
                   bottomRight: Radius.circular(15.0),
                 ),
               ),
-              child: const Center(
-                child: Text(
-                  'Widget azul que ocupa todo el alto',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(15.0),
+                  bottomRight: Radius.circular(15.0),
+                ),
+                child: ListView.builder(
+                  itemCount: reportWidgets.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return reportWidgets[index];
+                  },
                 ),
               ),
             ),
@@ -114,4 +129,12 @@ class ReportTable extends StatelessWidget {
       ],
     );
   }
+  void addReport() {
+    setState(() {
+      reportWidgets.insert(0,ReportResume(name: "Salomon David Saenz Giraldo",date: "20/04/2024", note: -1, index: reportCount,),);
+      // userCount++;
+      reportCount++;
+    });
+  }
+  
 }

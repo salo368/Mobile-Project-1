@@ -13,7 +13,7 @@ class UsersTable extends StatefulWidget {
 
 class _UsersTableState extends State<UsersTable> {
   int userCount = 1; // Variable para contar el número de informes
-  List<Widget> reportWidgets = [];
+  List<Widget> usersWidgets = [];
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +84,9 @@ class _UsersTableState extends State<UsersTable> {
                   bottomRight: Radius.circular(15.0),
                 ),
                 child: ListView.builder(
-                  itemCount: reportWidgets.length,
+                  itemCount: usersWidgets.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return reportWidgets[index];
+                    return usersWidgets[index];
                   },
                 ),
               ),
@@ -98,10 +98,10 @@ class _UsersTableState extends State<UsersTable> {
   }
 
   void addUser() {
-  setState(() {
-    reportWidgets.insert(0,UserResume(name: "Salomon David Saenz Giraldo",reportCount: 8, note: 4, index: userCount,),);
-    userCount++;
-  });
-}
+    setState(() {
+      usersWidgets.insert(0,UserResume(name: "Salomon David Saenz Giraldo",reportCount: 8, note: 4, index: userCount,),);
+      userCount++;
+    });
+  }
 
 }
