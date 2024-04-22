@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/technicalSupport',
+      initialRoute: '/coorHome',
       getPages: [
         GetPage(name: '/technicalSupport', page: () => const TechnicalSupport()),
         GetPage(name: '/newReport', page: () => NewReportPage()),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'resume_report.dart';
 import 'package:get/get.dart';
 
-
-
 class TechnicalSupport extends StatefulWidget {
   const TechnicalSupport({super.key});
 
