@@ -16,7 +16,7 @@ class _CoorUsersState extends State<CoorUsers> {
   @override
   void initState() {
     super.initState();
-    showUsersTable = true.obs;
+    showUsersTable = false.obs;
   }
 
   @override
