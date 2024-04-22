@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'coor_report_table.dart';
 
 class CoorHome extends StatefulWidget {
   const CoorHome({super.key});
@@ -39,7 +40,7 @@ class _CoorHomeState extends State<CoorHome> {
             ),
           ],
         ),
-        body: Container(), // Aquí se cambia ListView.builder por Container vacío
+        body: const ReportTable(), // Aquí se cambia ListView.builder por Container vacío
       ),
     );
   }

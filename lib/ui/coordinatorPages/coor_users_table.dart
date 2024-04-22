@@ -22,7 +22,7 @@ class UsersTable extends StatelessWidget {
                 topRight: Radius.circular(15.0),
               ),
             ),
-            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
+            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.27),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -58,7 +58,7 @@ class UsersTable extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.27),
               decoration: const BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.only(

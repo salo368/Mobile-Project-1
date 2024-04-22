@@ -27,7 +27,7 @@ class _CoorUsersState extends State<CoorUsers> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 186, 212, 255),
-          title: const Text('Coordinador de Usuarios de Soporte'),
+          title: const Text('Usuarios de Soporte Tecnico'),
           leading: IconButton(
             icon: Transform.rotate(
               angle: 3.1415927,

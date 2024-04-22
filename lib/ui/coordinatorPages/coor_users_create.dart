@@ -22,7 +22,7 @@ class UsersCreate extends StatelessWidget {
                 topRight: Radius.circular(15.0),
               ),
             ),
-            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
+            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.27),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -48,7 +48,7 @@ class UsersCreate extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.27),
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 243, 138, 33),
                 borderRadius: BorderRadius.only(
