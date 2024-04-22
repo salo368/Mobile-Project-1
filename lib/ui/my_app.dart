@@ -6,6 +6,7 @@ import 'supportPages/new_report_desc.dart';
 import 'coordinatorPages/coor_home.dart';
 import 'coordinatorPages/coor_users.dart';
 import 'supportPages/technical_support.dart';
+import 'loginPages/login.dart';
 
 
 class MyApp extends StatefulWidget {
@@ -23,13 +24,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/coorHome',
+      initialRoute: '/login',
       getPages: [
         GetPage(name: '/technicalSupport', page: () => const TechnicalSupport()),
         GetPage(name: '/newReport', page: () => NewReportPage()),
         GetPage(name: '/newReportDesc', page: () => const NewReportDescPage()),
         GetPage(name: '/coorHome', page: () => const CoorHome()),
-        GetPage(name: '/coorUsers', page: () => const CoorUsers())
+        GetPage(name: '/coorUsers', page: () => const CoorUsers()),
+        GetPage(name: '/login', page: () => const Login())
       ],
     );
   }

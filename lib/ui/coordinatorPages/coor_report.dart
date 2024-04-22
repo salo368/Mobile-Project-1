@@ -117,7 +117,7 @@ class Report extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: SizedBox(
-                                  width: 60.0,
+                                  width: 64.0,
                                   child: TextField(
                                     decoration: const InputDecoration(
                                       hintText: 'Puntaje',
