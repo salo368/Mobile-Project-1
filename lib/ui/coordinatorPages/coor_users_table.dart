@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'coor_user_resume.dart';
+import '../../controllers/coor_controller.dart';
 
 class UsersTable extends StatefulWidget {
   final VoidCallback changeToUsersCreate;
-
-  const UsersTable({Key? key, required this.changeToUsersCreate}) : super(key: key);
+  final CoorController coorController;
+  const UsersTable({Key? key, required this.changeToUsersCreate, required this.coorController}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -16,11 +17,14 @@ class _UsersTableState extends State<UsersTable> {
   List<Widget> usersWidgets = [];
 
   @override
+  void initState() {
+    super.initState();
+    loadReportss(); // Llama a loadReports() solo cuando se inicia el estado por primera vez
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    addUser();
-    addUser();
-    addUser();
     return Column(
       children: [
         Padding(
@@ -47,7 +51,14 @@ class _UsersTableState extends State<UsersTable> {
                     ),
                     elevation: 2,
                     child: ElevatedButton(
-                      onPressed: widget.changeToUsersCreate,
+                       onPressed: () 
+                      {
+                        // widget.coorController.email.value="b@b.com";
+                        // widget.coorController.name.value="Andres";
+                        // widget.coorController.password.value="12345";
+                        // widget.coorController.createUser();
+                        widget.changeToUsersCreate();
+                      },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(7.0),
                         backgroundColor: const Color.fromARGB(255, 144, 248, 148),
@@ -103,5 +114,41 @@ class _UsersTableState extends State<UsersTable> {
       userCount++;
     });
   }
+  void loadReportss() {
+    clearReports();
+    var reports = widget.coorController.loadUsers();
+
+    reports.then((List<Map<String, dynamic>> data) async {
+      for (var report in data) {
+        
+        // Obtener información del nombre del usuario
+        var nameee = await widget.coorController.userInfoByEmail(report['email']);
+        print(nameee);
+        setState(() {
+          // Crear el widget UserResume después de obtener el nombre del usuario
+          usersWidgets.insert(
+            0,
+            UserResume(
+              name: report['name'],
+              reportCount: nameee[1].toInt(),
+              note: nameee[0],
+              index: userCount,
+            ),
+          );
+          userCount++;
+        });
+      }
+    });
+  }
+
+
+
+  void clearReports() {
+    setState(() {
+      usersWidgets.clear();
+      userCount = 1; // Reiniciar el contador a 1
+    });
+  }
+
 
 }

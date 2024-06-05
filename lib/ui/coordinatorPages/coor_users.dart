@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'coor_users_table.dart';
 import 'coor_users_create.dart';
+import '../../controllers/coor_controller.dart';
 
 class CoorUsers extends StatefulWidget {
-  const CoorUsers({Key? key}) : super(key: key);
+  final CoorController coorController;
+  const CoorUsers({Key? key, required this.coorController}) : super(key: key);
 
   @override
   State<CoorUsers> createState() => _CoorUsersState();
@@ -51,8 +53,8 @@ class _CoorUsersState extends State<CoorUsers> {
         ),
         body: Obx(() {
           return showUsersTable.value
-              ? UsersTable(changeToUsersCreate: switchToUsersCreate)
-              : UsersCreate(changeToUsersTable: switchToUsersTable);
+              ? UsersTable(changeToUsersCreate: switchToUsersCreate,coorController:widget.coorController)
+              : UsersCreate(changeToUsersTable: switchToUsersTable,coorController:widget.coorController);
         }),
       ),
     );

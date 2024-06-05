@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/newReport', page: () => NewReportPage(suppController: suppController)),
         GetPage(name: '/newReportDesc', page: () =>  NewReportDescPage(suppController: suppController)),
         GetPage(name: '/coorHome', page: () =>  CoorHome(coorController: coorController,)),
-        GetPage(name: '/coorUsers', page: () => const CoorUsers()),
+        GetPage(name: '/coorUsers', page: () =>  CoorUsers(coorController: coorController)),
         GetPage(name: '/login', page: () => Login(loginController: loginController)), // Pasa la instancia de LoginController a la página de login
       ],
     );

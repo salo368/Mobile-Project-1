@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../controllers/coor_controller.dart';
 
 class UsersCreate extends StatelessWidget {
   final VoidCallback changeToUsersTable;
-
-  const UsersCreate({Key? key, required this.changeToUsersTable}) : super(key: key);
+  final CoorController coorController;
+  const UsersCreate({Key? key, required this.changeToUsersTable, required this.coorController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +63,10 @@ class UsersCreate extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 100,top: 100,left: 100,right: 100), // Margen del 25%
                   child: Column(
                     children: [
-                      const Column(
+                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Nombre completo',
                             style: TextStyle(
                               fontSize: 16,
@@ -73,21 +74,24 @@ class UsersCreate extends StatelessWidget {
                             ),
                           ),
                           TextField(
-                            decoration: InputDecoration(
+                            onChanged: (value) {
+                              coorController.name.value=value;
+                            },
+                            decoration: const InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               backgroundColor: Colors.white,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 40),
-                      const Column(
+                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Correo electronico',
                             style: TextStyle(
                               fontSize: 16,
@@ -95,7 +99,10 @@ class UsersCreate extends StatelessWidget {
                             ),
                           ),
                           TextField(
-                            decoration: InputDecoration(
+                            onChanged: (value) {
+                              coorController.email.value=value;
+                            },
+                            decoration: const InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
                             ),
@@ -103,10 +110,10 @@ class UsersCreate extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 40),
-                      const Column(
+                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Contraseña',
                             style: TextStyle(
                               fontSize: 16,
@@ -114,7 +121,10 @@ class UsersCreate extends StatelessWidget {
                             ),
                           ),
                           TextField(
-                            decoration: InputDecoration(
+                            onChanged: (value) {
+                              coorController.password.value=value;
+                            },
+                            decoration: const InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
                             ),
@@ -127,8 +137,12 @@ class UsersCreate extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end, // Alinea el botón a la derecha
                        children: [
                           ElevatedButton(
-                            onPressed: () {
-                              // Acción al presionar el botón 'Crear'
+                            onPressed: () async {
+                              
+                              var next = await coorController.createUser();
+                              if (next) {
+                                changeToUsersTable();
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green, // Color verde para el botón

@@ -12,11 +12,71 @@ class CoorController extends GetxController {
   late Map<String, dynamic> currentReport; 
 
   // Función para crear un usuario
-  void createUser(String name, String email, String role) {
-    // Implementa la lógica para crear un usuario
-    print('Creando usuario: $name, $email, $role');
-    // Aquí podrías llamar a una API o realizar alguna otra operación
+  var email = "".obs;
+  var name = "".obs;
+  var password = "".obs;
+
+
+
+  Future<bool> createUser() async {
+    try {
+          // Datos del usuario a crear
+          final reportData = {
+        'email': email.value,
+        'name': name.value,
+        'password': password.value,
+        'type': false
+      };
+
+      
+
+      // Verificar si el correo ya existe
+      final checkResponse = await http.get(
+        Uri.parse('$apiUrlUsers?email=${email.value}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (checkResponse.statusCode == 200) {
+        final responseBody = jsonDecode(checkResponse.body);
+
+        // Verificar si la lista de usuarios no está vacía
+        if (responseBody is List && responseBody.isNotEmpty) {
+          // Mostrar snack si el correo ya existe
+          Get.snackbar('Error', 'El correo ya existe', snackPosition: SnackPosition.BOTTOM);
+          return false;
+        }
+      } else {
+        print('Error al verificar el correo: ${checkResponse.statusCode}');
+        return false;
+      }
+      
+      // Crear el usuario si el correo no existe
+      final response = await http.post(
+        Uri.parse(apiUrlUsers),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(reportData),
+      );
+
+      if (response.statusCode == 200) {
+        print('Usuario creado exitosamente.');
+        cleanVariables();
+        return true;
+      } else {
+        print('Error al crear el usuario: ${response.statusCode}');
+        cleanVariables();
+        return true;
+      }
+
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
   }
+
 
   // Función para establecer una calificación a un usuario
   Future<void> updateReportQualification(String nota) async {
@@ -47,13 +107,50 @@ class CoorController extends GetxController {
   }
 
   // Función para cargar los usuarios
-  void loadUsers() {
-    // Implementa la lógica para cargar los usuarios
-    print('Cargando usuarios...');
-    // Aquí podrías llamar a una API o realizar alguna otra operación
+  Future<List<Map<String, dynamic>>> loadUsers() async {
+    try {
+      final response = await http.get(Uri.parse(apiUrlUsers));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        // Filtrar los usuarios cuyo 'type' sea false
+        List<Map<String, dynamic>> filteredData = data.cast<Map<String, dynamic>>()
+            .where((user) => user['type'] == false)
+            .toList();
+        return filteredData;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
   }
 
+  Future<List<double>> userInfoByEmail(String email) async {
+    try {
+      final response = await http.get(Uri.parse('$apiUrl?email=$email'));
 
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        double totalQualification = 0;
+
+        // Calculating total qualification
+        for (var report in data) {
+          double qualification = double.tryParse(report['qualification']) ?? 0.0;
+          totalQualification += qualification;
+        }
+
+        // Calculating average qualification
+        double averageQualification = data.isEmpty ? 0 : totalQualification / data.length;
+        return [averageQualification, data.length.toDouble()];
+      } else {
+        return [0, 0]; // Return default values if request fails
+      }
+    } catch (e) {
+      print(e);
+      return [0, 0]; // Return default values if exception occurs
+    }
+  }
 
   // Función para cargar los informes
   Future<List<Map<String, dynamic>>> loadReports() async {
@@ -120,4 +217,9 @@ class CoorController extends GetxController {
     }
   }
 
+  void cleanVariables() {
+    name.value = "";
+    email.value = "";
+    password.value = "";
+  }
 }

@@ -145,44 +145,41 @@ class _ReportTableState extends State<ReportTable> {
   void loadReportss() {
     clearReports();
     var reports;
-    if (_textFieldController.text == ""){
+    if (_textFieldController.text == "") {
       reports = widget.coorController.loadReports();
-    }else{
-      if (valorFiltro==2){
+    } else {
+      if (valorFiltro == 2) {
         reports = widget.coorController.loadReportsByEmail(_textFieldController.text);
-      }else{
+      } else {
         reports = widget.coorController.loadReportsById(_textFieldController.text);
       }
-      
     }
-     // Usa el controlador proporcionado por el widget
-    
-    // Iterar sobre los informes y actualizar el estado para cada uno
-    reports.then((List<Map<String, dynamic>> data) {
+
+    reports.then((List<Map<String, dynamic>> data) async {
+      List<ReportResume> newReportWidgets = [];
+
+      for (var report in data) {
+        var nameee = await widget.coorController.loadFirstReportNameByEmail(report['email']);
+        newReportWidgets.insert(0, 
+          ReportResume(
+            name: nameee,
+            date: report['date'],
+            note: double.tryParse(report['qualification']) ?? -1,
+            index: reportCount,
+            changeToReport: widget.changeToReport,
+            coorController: widget.coorController,
+            reporte: report,
+          ),
+        );
+        reportCount++;
+      }
+
       setState(() {
-        for (var report in data) {
-          widget.coorController.loadFirstReportNameByEmail(report['email']).then((nameee) {
-            setState(() {
-              reportWidgets.insert(
-                0,
-                ReportResume(
-                  name: nameee,
-                  date: report['date'],
-                  note: double.tryParse(report['qualification']) ?? -1,
-                  index: reportCount,
-                  changeToReport: widget.changeToReport,
-                  coorController: widget.coorController,
-                  reporte: report,
-                ),
-              );
-              reportCount++;
-            });
-          });
-        }
+        reportWidgets = newReportWidgets;
       });
     });
-   
   }
+
 
   void clearReports() {
     setState(() {
