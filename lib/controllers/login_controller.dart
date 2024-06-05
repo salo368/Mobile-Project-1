@@ -23,6 +23,7 @@ class LoginController extends GetxController {
         'Email or password cannot be empty',
         backgroundColor: Colors.red,
         colorText: Colors.white,
+        
       );
       return;
     }

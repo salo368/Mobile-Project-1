@@ -50,8 +50,11 @@ class _NewReportDescPageState extends State<NewReportDescPage> {
               // Agrega aquí la lógica adicional para guardar la información del informe, si es necesario
 
               
-              await widget.suppController.createReport();
-              Get.toNamed("/technicalSupport");
+              var next = await widget.suppController.createReport();
+              if (next){
+                Get.toNamed("/technicalSupport");
+              }
+              
             },
           ),
         ],

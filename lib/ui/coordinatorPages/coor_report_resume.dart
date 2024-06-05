@@ -52,7 +52,7 @@ class _ReportResumeState extends State<ReportResume> {
       },
       child: GestureDetector(
         onTap: () async {
-          widget.coorController.currentReport = await widget.reporte;
+          widget.coorController.currentReport = widget.reporte;
           widget.changeToReport();
           
         },

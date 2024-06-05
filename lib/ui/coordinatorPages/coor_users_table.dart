@@ -123,7 +123,7 @@ class _UsersTableState extends State<UsersTable> {
         
         // Obtener información del nombre del usuario
         var nameee = await widget.coorController.userInfoByEmail(report['email']);
-        print(nameee);
+        
         setState(() {
           // Crear el widget UserResume después de obtener el nombre del usuario
           usersWidgets.insert(

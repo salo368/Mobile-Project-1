@@ -20,30 +20,26 @@ class SuppController extends GetxController {
 
   var shouldCheckConnection = true.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Llama a la función para verificar la conexión cuando se inicie el controlador
-    
-  }
 
   Future<void> checkConnection() async {
-    shouldCheckConnection.value=true;
+    shouldCheckConnection.value = true;
     ConnectivityResult result = await Connectivity().checkConnectivity();
-    if (shouldCheckConnection.value){
+    if (shouldCheckConnection.value) {
       if (result == ConnectivityResult.none) {
         // Muestra una snackbar si no hay conexión
-        Get.snackbar('Conexión perdida', 'Por favor, verifica tu conexión a internet.');
-        Future.delayed(Duration(seconds: 5), () => checkConnection());
+        Get.snackbar(
+          'Conexión perdida', 
+          'Por favor, verifica tu conexión a internet.',
+          backgroundColor: Colors.red[100],
+        );
+        Future.delayed(const Duration(seconds: 5), () => checkConnection());
       } else {
         // Vuelve a verificar la conexión después de 5 segundos
         try {
           var reports = await loadLocalReports();
-          
+
           if (reports.isNotEmpty) {
-            
             // Iterar sobre cada reporte y enviarlo
-            
             for (var report in reports) {
               await createReportPar(
                 report['email'],
@@ -56,7 +52,7 @@ class SuppController extends GetxController {
                 report['qualification'],
               );
             }
-            
+
             // Limpiar la caja de reportes locales
             var box = await Hive.openBox('local_reports');
             await box.clear();
@@ -65,18 +61,18 @@ class SuppController extends GetxController {
             Get.snackbar(
               'Reportes Enviados',
               'Todos los reportes locales han sido enviados y la caja ha sido limpiada.',
+              backgroundColor: Colors.red[100],
             );
-          } 
-          await Future.delayed(Duration(seconds: 5), () => checkConnection());
+          }
+          await Future.delayed(const Duration(seconds: 5), () => checkConnection());
         } catch (e) {
           // Mostrar un SnackBar en caso de error
           Get.snackbar(
             'Error',
             'Error al enviar los reportes locales: $e',
+            backgroundColor: Colors.red[100],
           );
         }
-        
-        
       }
     }
   }
@@ -93,16 +89,29 @@ class SuppController extends GetxController {
         List<dynamic> data = json.decode(response.body);
         return data.cast<Map<String, dynamic>>();
       } else {
-        
         return [];
       }
     } catch (e) {
-      
       return [];
     }
   }
 
-  Future<void> createReport() async {
+  Future<bool> createReport() async {
+    // Validar que todos los campos no estén vacíos
+    if (email.value.isEmpty ||
+        client.value.isEmpty ||
+        cc.value.isEmpty ||
+        subject.value.isEmpty ||
+        description.value.isEmpty ) {
+      Get.snackbar(
+        'Error',
+        'Todos los campos son obligatorios',
+        backgroundColor: Colors.red[100],
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false; // Salir de la función si algún campo está vacío
+    }
+
     try {
       final reportData = {
         'email': email.value,
@@ -123,18 +132,29 @@ class SuppController extends GetxController {
         body: jsonEncode(reportData),
       );
 
-      if (response.statusCode == 200) {
-        print('Reporte creado exitosamente.');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Manejo de la respuesta exitosa
       } else {
-        print('Error al crear el reporte: ${response.statusCode}');
+        Get.snackbar(
+          'Error',
+          'Error al crear el reporte: ${response.statusCode}',
+          backgroundColor: Colors.red[100],
+        );
       }
       cleanVariables();
+      return true;
     } catch (e) {
-      print("Fallo de subida queda en local");
+      Get.snackbar(
+        'Error',
+        'Fallo de subida, queda en local',
+        backgroundColor: Colors.red[100],
+      );
       await saveLocal();
       cleanVariables();
+      return false;
     }
   }
+
 
   Future<void> createReportPar(
     String emailValue,
@@ -166,16 +186,23 @@ class SuppController extends GetxController {
         body: jsonEncode(reportData),
       );
 
-      if (response.statusCode == 200) {
-        print('Reporte creado exitosamente.');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        
       } else {
-        print('Error al crear el reporte: ${response.statusCode}');
+        Get.snackbar(
+          'Error',
+          'Error al crear el reporte: ${response.statusCode}',
+          backgroundColor: Colors.red[100],
+        );
       }
     } catch (e) {
-      print('Error al crear el reporte: $e');
+      Get.snackbar(
+        'Error',
+        'Error al crear el reporte: $e',
+        backgroundColor: Colors.red[100],
+      );
     }
   }
-
 
   Future<void> saveLocal() async {
     try {
@@ -191,9 +218,17 @@ class SuppController extends GetxController {
         'qualification': qualification,
       };
       await box.add(newReport);
-      print('Reporte guardado localmente.');
+      Get.snackbar(
+        'Reporte guardado',
+        'Reporte guardado localmente.',
+        backgroundColor: Colors.red[100],
+      );
     } catch (e) {
-      print('Error al guardar el reporte localmente: $e');
+      Get.snackbar(
+        'Error',
+        'Error al guardar el reporte localmente: $e',
+        backgroundColor: Colors.red[100],
+      );
     }
   }
 
@@ -206,7 +241,6 @@ class SuppController extends GetxController {
       }
       return localReports;
     } catch (e) {
-      
       return []; // Retorna una lista vacía en caso de error
     }
   }

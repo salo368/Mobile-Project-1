@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'coor_report_resume.dart';
 import '../../controllers/coor_controller.dart';
