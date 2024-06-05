@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'coor_report_resume.dart';
+import '../../controllers/coor_controller.dart';
 
 class ReportTable extends StatefulWidget {
   final VoidCallback changeToReport;
-
-  const ReportTable({Key? key, required this.changeToReport}) : super(key: key);
+  final CoorController coorController;
+  const ReportTable({Key? key, required this.changeToReport, required this.coorController}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -14,10 +15,18 @@ class ReportTable extends StatefulWidget {
 class _ReportTableState extends State<ReportTable> {
   int reportCount = 1; // Variable para contar el número de informes
   List<Widget> reportWidgets = [];
+  int valorFiltro = 1;
+  TextEditingController _textFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    loadReportss(); // Llama a loadReports() solo cuando se inicia el estado por primera vez
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    addReport();
-    addReport();
     double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
@@ -35,7 +44,7 @@ class _ReportTableState extends State<ReportTable> {
             margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.27),
             child: Center(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: MediaQuery.of(context).size.width * 0.4,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -43,7 +52,7 @@ class _ReportTableState extends State<ReportTable> {
                       padding: const EdgeInsets.only(left: 10.0),
                       child: IconButton(
                         onPressed: () {
-                          // Acción al presionar el IconButton
+                          loadReportss();
                         },
                         icon: const Icon(Icons.search),
                       ),
@@ -60,16 +69,17 @@ class _ReportTableState extends State<ReportTable> {
                             ),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: TextField(
+                                controller: _textFieldController,
                                 textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Buscar',
                                   border: InputBorder.none,
                                 ),
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 15),
                               ),
                             ),
                           ),
@@ -88,7 +98,9 @@ class _ReportTableState extends State<ReportTable> {
                         ),
                       ],
                       onSelected: (value) {
-                        // Acción a realizar según la opción seleccionada
+                        setState(() {
+                          valorFiltro = value;
+                        });
                       },
                       offset: const Offset(70, 43), // Ajusta el valor de Y según sea necesario
                       icon: const Icon(Icons.filter_list),
@@ -129,11 +141,53 @@ class _ReportTableState extends State<ReportTable> {
       ],
     );
   }
-  void addReport() {
+  
+  void loadReportss() {
+    clearReports();
+    var reports;
+    if (_textFieldController.text == ""){
+      reports = widget.coorController.loadReports();
+    }else{
+      if (valorFiltro==2){
+        reports = widget.coorController.loadReportsByEmail(_textFieldController.text);
+      }else{
+        reports = widget.coorController.loadReportsById(_textFieldController.text);
+      }
+      
+    }
+     // Usa el controlador proporcionado por el widget
+    
+    // Iterar sobre los informes y actualizar el estado para cada uno
+    reports.then((List<Map<String, dynamic>> data) {
+      setState(() {
+        for (var report in data) {
+          widget.coorController.loadFirstReportNameByEmail(report['email']).then((nameee) {
+            setState(() {
+              reportWidgets.insert(
+                0,
+                ReportResume(
+                  name: nameee,
+                  date: report['date'],
+                  note: double.tryParse(report['qualification']) ?? -1,
+                  index: reportCount,
+                  changeToReport: widget.changeToReport,
+                  coorController: widget.coorController,
+                  reporte: report,
+                ),
+              );
+              reportCount++;
+            });
+          });
+        }
+      });
+    });
+   
+  }
+
+  void clearReports() {
     setState(() {
-      reportWidgets.insert(0,ReportResume(name: "Salomon David Saenz Giraldo",date: "20/04/2024", note: -1, index: reportCount,changeToReport: widget.changeToReport,),);
-      // userCount++;
-      reportCount++;
+      reportWidgets.clear();
+      reportCount = 1; // Reiniciar el contador a 1
     });
   }
   

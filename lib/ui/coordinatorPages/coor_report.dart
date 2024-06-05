@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../controllers/coor_controller.dart';
 
+// ignore: must_be_immutable
 class Report extends StatelessWidget {
   final VoidCallback changeToReportTable;
+  final CoorController coorController;
+  
+  Report({Key? key, required this.changeToReportTable, required this.coorController}) : super(key: key);
 
-  const Report({Key? key, required this.changeToReportTable}) : super(key: key);
+  TextEditingController _textFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,44 +76,44 @@ class Report extends StatelessWidget {
                       child: ListView(
                         shrinkWrap: true,
                         children: [
-                          const ListTile(
+                           ListTile(
                             title: Text(
-                              'Nombre: Salomon David Saenz Giraldo',
-                              style: TextStyle(fontSize: 20),
+                              'Nombre del cliente: ${coorController.currentReport["client"]}',
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
-                          const ListTile(
+                          ListTile(
                             title: Text(
-                              'Id: 123456',
-                              style: TextStyle(fontSize: 20),
+                              'Id: ${coorController.currentReport["cc"]}',
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
-                          const ListTile(
+                           ListTile(
                             title: Text(
-                              'Fecha: 22 de abril, 2024',
-                              style: TextStyle(fontSize: 20),
+                              'Fecha: ${coorController.currentReport["date"]}',
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
-                          const ListTile(
+                           ListTile(
                             title: Text(
-                              'Hora: 10:00 AM',
-                              style: TextStyle(fontSize: 20),
+                              'Hora: ${coorController.currentReport["time"]}',
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
-                          const ListTile(
+                           ListTile(
                             title: Text(
-                              'Asunto: Asunto de ejemplo',
-                              style: TextStyle(fontSize: 20),
+                              'Asunto: ${coorController.currentReport["subject"]}',
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
-                          const ListTile(
-                            title: Text(
+                           ListTile(
+                            title: const Text(
                               'Descripción:',
                               style: TextStyle(fontSize: 20),
                             ),
                             subtitle: Text(
-                              'Descripción de ejemplo. Este es un texto largo que muestra una descripción de ejemplo. Puede ser tan largo como necesites y la lista será desplazable.',
-                              style: TextStyle(fontSize: 18),
+                              coorController.currentReport["description"],
+                              style: const TextStyle(fontSize: 18),
                             
                             ),
                           ),
@@ -119,21 +124,23 @@ class Report extends StatelessWidget {
                                 child: SizedBox(
                                   width: 64.0,
                                   child: TextField(
-                                    decoration: const InputDecoration(
-                                      hintText: 'Puntaje',
+                                    controller: _textFieldController,
+                                    decoration:  InputDecoration(
+                                      hintText: coorController.currentReport["qualification"],
                                       contentPadding: EdgeInsets.zero,
                                       
                                     ),
                                     textAlign: TextAlign.center,
                                     inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.allow(RegExp(r'^\d{0,1}\.?\d{0,1}')),
+                                      FilteringTextInputFormatter.allow(RegExp(r'^([0-5](\.[0-9])?)$')),
                                     ],
                                   ),
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  // Acción al presionar el botón
+                                onPressed: () async {
+                                  await coorController.updateReportQualification(_textFieldController.text);
+                                  changeToReportTable();
                                 },
                                 icon: const Icon(Icons.check),
                                 iconSize: 32.0,

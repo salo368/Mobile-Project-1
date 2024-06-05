@@ -3,35 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../controllers/supp_controller.dart';
 
-class NewReportController extends GetxController {
-  var nombreCliente = "".obs;
-  var idCliente = "".obs;
-  var fechaServicio = DateTime.now().obs;
-  var horaServicio = TimeOfDay.now().obs;
-
-  void updateNombreCliente(String nombre) {
-    nombreCliente.value = nombre;
-  }
-
-  void updateIdCliente(String id) {
-    idCliente.value = id;
-  }
-
-  void updateFechaServicio(DateTime fecha) {
-    fechaServicio.value = fecha;
-  }
-
-  void updateHoraServicio(TimeOfDay hora) {
-    horaServicio.value = hora;
-  }
-}
 
 // ignore: must_be_immutable
 class NewReportPage extends StatelessWidget {
-  NewReportController newReportController = Get.put(NewReportController());
-
-  NewReportPage({super.key});
+  final SuppController suppController;
+  const NewReportPage({Key? key, required this.suppController}) : super(key: key);
   
 
   @override
@@ -42,6 +20,7 @@ class NewReportPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            suppController.cleanVariables();
             Get.toNamed("/technicalSupport");
           },
         ),
@@ -49,6 +28,7 @@ class NewReportPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.arrow_forward),
             onPressed: () {
+              
               Get.toNamed("/newReportDesc");
             },
           ),
@@ -74,9 +54,9 @@ class NewReportPage extends StatelessWidget {
               decoration: const InputDecoration(
                 hintText: 'Ingrese el nombre del cliente',
               ),
-              controller: TextEditingController(text: newReportController.nombreCliente.value.isNotEmpty ? newReportController.nombreCliente.value : null),
+              controller: TextEditingController(text: suppController.client.value.isNotEmpty ? suppController.client.value : null),
               onChanged: (value) {
-                newReportController.updateNombreCliente(value);
+                suppController.updateClient(value);
               },
             ),
             const Padding(
@@ -98,10 +78,10 @@ class NewReportPage extends StatelessWidget {
                 FilteringTextInputFormatter.digitsOnly
               ],
               controller: TextEditingController(
-                text: newReportController.idCliente.value.isNotEmpty ? newReportController.idCliente.value : null,
+                text: suppController.cc.value.isNotEmpty ? suppController.cc.value : null,
               ),
               onChanged: (value) {
-                newReportController.updateIdCliente(value);
+                suppController.updateCc(value);
               },
             ),
             Padding(
@@ -120,11 +100,11 @@ class NewReportPage extends StatelessWidget {
                         );
 
                         if (fechaSeleccionada != null) {
-                          newReportController.updateFechaServicio(fechaSeleccionada);
+                          suppController.updateDate(fechaSeleccionada);
                         }
                       },
                       child: Obx(() => Text(
-                        'Fecha del Servicio: ${newReportController.fechaServicio.value.day.toString().padLeft(2, '0')}/${newReportController.fechaServicio.value.month.toString().padLeft(2, '0')}/${newReportController.fechaServicio.value.year}',
+                        'Fecha del Servicio: ${suppController.date.value.day.toString().padLeft(2, '0')}/${suppController.date.value.month.toString().padLeft(2, '0')}/${suppController.date.value.year}',
                         style: const TextStyle(
                           fontSize: 16.0,
                         ),
@@ -143,7 +123,7 @@ class NewReportPage extends StatelessWidget {
                       );
 
                       if (fechaSeleccionada != null) {
-                        newReportController.updateFechaServicio(fechaSeleccionada);
+                        suppController.updateDate(fechaSeleccionada);
                       }
                     },
                   ),
@@ -164,11 +144,11 @@ class NewReportPage extends StatelessWidget {
                         );
 
                         if (horaSeleccionada != null) {
-                          newReportController.updateHoraServicio(horaSeleccionada);
+                          suppController.updateTime(horaSeleccionada);
                         }
                       },
                       child: Obx(() => Text(
-                        'Hora del Servicio: ${newReportController.horaServicio.value.hour % 12 == 0 ? 12 : newReportController.horaServicio.value.hour % 12}:${newReportController.horaServicio.value.minute < 10 ? '0${newReportController.horaServicio.value.minute}' : newReportController.horaServicio.value.minute} ${newReportController.horaServicio.value.hour < 12 ? 'AM' : 'PM'}',
+                        'Hora del Servicio: ${suppController.time.value.hour % 12 == 0 ? 12 : suppController.time.value.hour % 12}:${suppController.time.value.minute < 10 ? '0${suppController.time.value.minute}' : suppController.time.value.minute} ${suppController.time.value.hour < 12 ? 'AM' : 'PM'}',
                         style: const TextStyle(
                           fontSize: 16.0,
                         ),
@@ -185,7 +165,7 @@ class NewReportPage extends StatelessWidget {
                       );
 
                       if (horaSeleccionada != null) {
-                        newReportController.updateHoraServicio(horaSeleccionada);
+                        suppController.updateTime(horaSeleccionada);
                       }
                     },
                   ),

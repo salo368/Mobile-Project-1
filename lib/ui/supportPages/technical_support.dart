@@ -1,10 +1,11 @@
-// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'resume_report.dart';
 import 'package:get/get.dart';
+import '../../controllers/supp_controller.dart';
 
 class TechnicalSupport extends StatefulWidget {
-  const TechnicalSupport({super.key});
+  final SuppController suppController;
+  const TechnicalSupport({Key? key, required this.suppController}) : super(key: key);
 
   @override
   State<TechnicalSupport> createState() => _TechnicalSupportState();
@@ -15,9 +16,13 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
   List<Widget> reportWidgets = [];
 
   @override
+  void initState() {
+    super.initState();
+    loadReports(); // Llama a loadReports() solo cuando se inicia el estado por primera vez
+  }
+
+  @override
   Widget build(BuildContext context) {
-    addReport();
-    addReport();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -29,6 +34,7 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
               child: const Icon(Icons.exit_to_app),
             ),
             onPressed: () {
+              widget.suppController.deactivateConnectionCheck();
               Get.toNamed("/login");
             },
           ),
@@ -41,7 +47,6 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //addReport();
             Get.toNamed("/newReport");
           },
           backgroundColor: Colors.blue,
@@ -52,10 +57,65 @@ class _TechnicalSupportState extends State<TechnicalSupport> {
     );
   }
 
-  void addReport() {
+  void loadReports() {
+    clearReports();
+    var email = widget.suppController.email.value; // Correo electrónico para filtrar los informes
+    final reports = widget.suppController.loadReports(email); // Usa el controlador proporcionado por el widget
+    
+    // Iterar sobre los informes y actualizar el estado para cada uno
+    reports.then((List<Map<String, dynamic>> data) {
+      setState(() {
+        for (var report in data) {
+          reportWidgets.insert(
+            0,
+            ResumeReport(
+              reportNumber: reportCount.toString(),
+              date: report['date'],
+              time: report['time'],
+              qual: report['qualification'],
+              subject: report['subject'],
+              localData: false,
+            ),
+          );
+          reportCount++;
+        }
+      });
+    });
+
+    loadLocalReports();
+  }
+
+  void loadLocalReports(){
+
+    final reports = widget.suppController.loadLocalReports(); // Usa el controlador proporcionado por el widget
+    
+    // Iterar sobre los informes y actualizar el estado para cada uno
+    reports.then((List<Map<String, dynamic>> data) {
+      setState(() {
+        for (var report in data) {
+          reportWidgets.insert(
+            0,
+            ResumeReport(
+              reportNumber: reportCount.toString(),
+              date: report['date'],
+              time: report['time'],
+              qual: report['qualification'],
+              subject: report['subject'],
+              localData: true,
+            ),
+          );
+          reportCount++;
+        }
+      });
+    });
+  }
+
+  
+
+  void clearReports() {
     setState(() {
-      reportWidgets.insert(0, ResumeReport(reportNumber: reportCount.toString()));
-      reportCount++; 
+      reportWidgets.clear();
+      reportCount = 1; // Reiniciar el contador a 1
     });
   }
 }

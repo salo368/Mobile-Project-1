@@ -7,18 +7,29 @@ import 'coordinatorPages/coor_home.dart';
 import 'coordinatorPages/coor_users.dart';
 import 'supportPages/technical_support.dart';
 import 'loginPages/login.dart';
-
+import '../controllers/login_controller.dart';
+import '../controllers/supp_controller.dart';
+import '../controllers/coor_controller.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  int reportCount = 1; // Variable para contar el número de informes
-  List<Widget> reportWidgets = [];
+  late final LoginController loginController;
+  late final SuppController suppController;
+  late final CoorController coorController; // Declara la instancia de LoginController
+
+  @override
+  void initState() {
+    super.initState();
+    suppController = Get.put(SuppController()); 
+    coorController = Get.put(CoorController());// Inicializa LoginController usando Get.put
+    loginController = Get.put(LoginController(suppController));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +37,12 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
       getPages: [
-        GetPage(name: '/technicalSupport', page: () => const TechnicalSupport()),
-        GetPage(name: '/newReport', page: () => NewReportPage()),
-        GetPage(name: '/newReportDesc', page: () => const NewReportDescPage()),
-        GetPage(name: '/coorHome', page: () => const CoorHome()),
+        GetPage(name: '/technicalSupport', page: () => TechnicalSupport(suppController: suppController)),
+        GetPage(name: '/newReport', page: () => NewReportPage(suppController: suppController)),
+        GetPage(name: '/newReportDesc', page: () =>  NewReportDescPage(suppController: suppController)),
+        GetPage(name: '/coorHome', page: () =>  CoorHome(coorController: coorController,)),
         GetPage(name: '/coorUsers', page: () => const CoorUsers()),
-        GetPage(name: '/login', page: () => const Login())
+        GetPage(name: '/login', page: () => Login(loginController: loginController)), // Pasa la instancia de LoginController a la página de login
       ],
     );
   }

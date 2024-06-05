@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-
+import '../../controllers/coor_controller.dart';
 class ReportResume extends StatefulWidget {
   final String name;
   final String date;
   final double note;
   final int index; // Agregar el parámetro de índice
   final VoidCallback changeToReport;
+  final CoorController coorController;
+  final Map<String, dynamic> reporte;
 
   const ReportResume({
     Key? key,
@@ -13,7 +15,9 @@ class ReportResume extends StatefulWidget {
     required this.date,
     required this.note,
     required this.index,
-    required this.changeToReport
+    required this.changeToReport, 
+    required this.coorController,
+    required this.reporte
   }) : super(key: key);
 
   @override
@@ -47,8 +51,10 @@ class _ReportResumeState extends State<ReportResume> {
         });
       },
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          widget.coorController.currentReport = await widget.reporte;
           widget.changeToReport();
+          
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 50),

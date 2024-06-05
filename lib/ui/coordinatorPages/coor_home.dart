@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'coor_report_table.dart';
 import 'coor_report.dart';
+import '../../controllers/coor_controller.dart';
 
 class CoorHome extends StatefulWidget {
-  const CoorHome({super.key});
+  final CoorController coorController;
+  const CoorHome({Key? key, required this.coorController}) : super(key: key);
 
   @override
   State<CoorHome> createState() => _CoorHomeState();
@@ -52,8 +54,8 @@ class _CoorHomeState extends State<CoorHome> {
         ),
         body: Obx(() {
           return showReportTable.value
-              ? ReportTable(changeToReport: switchToReport)
-              : Report(changeToReportTable: switchToReportTable);
+              ? ReportTable(changeToReport: switchToReport,coorController: widget.coorController,)
+              : Report(changeToReportTable: switchToReportTable,coorController: widget.coorController);
         }), // Aquí se cambia ListView.builder por Container vacío
       ),
     );

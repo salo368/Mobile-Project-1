@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import '../../controllers/login_controller.dart';
+
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  final LoginController loginController;
+  const Login({Key? key, required this.loginController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +61,8 @@ class Login extends StatelessWidget {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          // Verificar las credenciales ingresadas por el usuario
-                          if (emailController.text == 'user' &&
-                              passwordController.text == '12345') {
-                            // Usuario "a@a.com" redirigido a "/technicalSupport"
-                            Get.toNamed("/technicalSupport");
-                          } else if (emailController.text == 'a@a.com' &&
-                              passwordController.text == '12345') {
-                            // Usuario "b@b.com" redirigido a "/coorHome"
-                            Get.toNamed("/coorHome");
-                          } else {
-                            // Si las credenciales son incorrectas, mostrar un mensaje de error
-                            Get.snackbar(
-                              'Error',
-                              'Correo o contraseña incorrectos',
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                            );
-                          }
+                          // Llama a la función validateLogin del controlador de login
+                          loginController.validateLogin(emailController.text, passwordController.text);
                         },
                         child: const Text('Aceptar'),
                       ),
